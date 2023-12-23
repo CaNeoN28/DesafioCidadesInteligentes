@@ -1,0 +1,15 @@
+{
+  "name": "desafio-cidades-inteligentes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "desafio.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "jest": "^29.7.0"
+  }
+}
