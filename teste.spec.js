@@ -1,5 +1,6 @@
 const { describe, expect, test } = require("@jest/globals");
 const { Usuario } = require("./desafio.js");
+const { compareSync } = require("bcrypt");
 
 const dadosUsuario = {
   nome: "Carlos Felipe",
@@ -31,17 +32,26 @@ describe("Criação do usuário", () => {
 
   test("deve dar erro de email inválido", () => {
     try {
-      const usuario = new Usuario({email: "carlosfelipe"});
+      const usuario = new Usuario({ email: "carlosfelipe" });
     } catch (error) {
       expect(error).toContain("Email inválido");
     }
   });
 
   test("deve dar erro de senha inválida", () => {
-		try{
-			const usuario = new Usuario({senha: "1234567"})
-		} catch (error) {
-			expect(error).toContain("Senha inválida")
-		}
-	});
+    try {
+      const usuario = new Usuario({ senha: "1234567" });
+    } catch (error) {
+      expect(error).toContain("Senha inválida");
+    }
+  });
+
+  test("deve testar a criptografia da senha", () => {
+    const usuario = new Usuario(dadosUsuario);
+
+    const senhaCorreta = compareSync(dadosUsuario.senha, usuario.senha)
+
+		expect(usuario.senha).not.toBe(dadosUsuario.senha)
+		expect(senhaCorreta).toBe(true)
+  });
 });

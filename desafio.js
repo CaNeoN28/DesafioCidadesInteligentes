@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt")
+
 class Usuario {
   validarUsuario(dadosUsuario) {
     const erros = [];
@@ -33,18 +35,25 @@ class Usuario {
     }
   }
 
+	criptografarSenha(senha) {
+		const salt = bcrypt.genSaltSync(6)
+
+		this.senha = bcrypt.hashSync(senha, salt)
+	}
+
   constructor(dadosUsuario) {
     try {
 			this.validarUsuario(dadosUsuario)
 
       this.nome = dadosUsuario.nome;
       this.email = dadosUsuario.email;
-      this.senha = dadosUsuario.senha;
       this.listaPermissoes = dadosUsuario.listaPermissoes || [];
       this.ativo = new Boolean(dadosUsuario.ativo) || false;
 
       this.dataCriacao = new Date();
       this.dataLogin = null;
+
+			this.criptografarSenha(dadosUsuario.senha)
     } catch (error) {
       throw error;
     }
