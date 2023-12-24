@@ -160,7 +160,7 @@ class GerenciamentoUsuarios {
   }
 }
 
-class Login {
+class Autenticacao {
   emailAutenticado = null;
 
   fazerLogin(email, senha) {}
@@ -171,4 +171,5 @@ class Login {
 module.exports = {
   Usuario,
   GerenciamentoUsuarios,
+	Autenticacao
 };
