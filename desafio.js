@@ -139,12 +139,12 @@ class GerenciamentoUsuarios {
     const usuario = this.usuarios[indice];
 
     if (usuario) {
-			this.usuarios = {...usuario, ativo: !usuario.ativo}
+			this.usuarios[indice] = {...usuario, ativo: !usuario.ativo}
     } else {
 			return "Não foi possível encontrar o usuário"
 		}
   }
-	
+
   excluirUsuario() {}
   listarUsuarios() {}
 }
