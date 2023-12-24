@@ -104,24 +104,28 @@ class GerenciamentoUsuarios {
 
       const usuario = this.usuarios[indice];
 
-      if (nome) usuario.nome = nome;
+      if (usuario) {
+        if (nome) usuario.nome = nome;
 
-      if (ativo) usuario.ativo = ativo;
+        if (ativo) usuario.ativo = ativo;
 
-      if (email && !Usuario.validarEmail(email)) {
-        erros.push("Email inválido");
-      } else if (email) {
-        usuario.email = email;
-      }
+        if (email && !Usuario.validarEmail(email)) {
+          erros.push("Email inválido");
+        } else if (email) {
+          usuario.email = email;
+        }
 
-      if (listaPermissoes && !Array.isArray(listaPermissoes)) {
-        erros.push("Lista de permissões inválida");
-      }
+        if (listaPermissoes && !Array.isArray(listaPermissoes)) {
+          erros.push("Lista de permissões inválida");
+        }
 
-      if (senha && !Usuario.validarSenha(senha)) {
-        erros.push("Senha inválida");
-      } else if (senha) {
-        const usuario = new Usuario({ ...usuario, ...dadosUsuario });
+        if (senha && !Usuario.validarSenha(senha)) {
+          erros.push("Senha inválida");
+        } else if (senha) {
+          const usuario = new Usuario({ ...usuario, ...dadosUsuario });
+        }
+      } else {
+        erros.push("Usuário não encontrado");
       }
 
       if (erros.length > 0) {

@@ -76,8 +76,6 @@ describe("Gerenciamento de usuários", () => {
   test("deve alterar um usuário no indice", () => {
     const resposta = gerenciamento.alterarUsuario(0, { nome: "Carlos Felipe Steinheuser" });
 
-		console.log(resposta)
-
 		expect(gerenciamento.usuarios[0].nome).toBe("Carlos Felipe Steinheuser")
   });
 
@@ -85,5 +83,11 @@ describe("Gerenciamento de usuários", () => {
 		const resposta = gerenciamento.alterarUsuario(0, {senha: "12345678"})
 
 		expect(resposta).toContain("Senha inválida")
+	})
+
+	test("deve retornar erro ao não encontrar o usuario", () => {
+		const resposta = gerenciamento.alterarUsuario(2, {nome: "Carlos"})
+
+		expect(resposta).toContain("Usuário não encontrado")
 	})
 });
