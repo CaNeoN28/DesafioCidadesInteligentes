@@ -1,5 +1,9 @@
 const { describe, expect, test } = require("@jest/globals");
-const { Usuario, GerenciamentoUsuarios } = require("./desafio.js");
+const {
+  Usuario,
+  GerenciamentoUsuarios,
+  Autenticacao,
+} = require("./desafio.js");
 const { compareSync } = require("bcrypt");
 
 const dadosUsuario = {
@@ -74,52 +78,80 @@ describe("Gerenciamento de usuários", () => {
   });
 
   test("deve alterar um usuário no indice", () => {
-    const resposta = gerenciamento.alterarUsuario(0, { nome: "Carlos Felipe Steinheuser" });
+    const resposta = gerenciamento.alterarUsuario(0, {
+      nome: "Carlos Felipe Steinheuser",
+    });
 
-		expect(gerenciamento.usuarios[0].nome).toBe("Carlos Felipe Steinheuser")
+    expect(gerenciamento.usuarios[0].nome).toBe("Carlos Felipe Steinheuser");
   });
 
-	test("deve retornar erro ao substituir por um dado inválido", () => {
-		const resposta = gerenciamento.alterarUsuario(0, {senha: "12345678"})
+  test("deve retornar erro ao substituir por um dado inválido", () => {
+    const resposta = gerenciamento.alterarUsuario(0, { senha: "12345678" });
 
-		expect(resposta).toContain("Senha inválida")
-	})
+    expect(resposta).toContain("Senha inválida");
+  });
 
-	test("deve retornar erro ao não encontrar o usuario ao alterar seus dados", () => {
-		const resposta = gerenciamento.alterarUsuario(2, {nome: "Carlos"})
+  test("deve retornar erro ao não encontrar o usuario ao alterar seus dados", () => {
+    const resposta = gerenciamento.alterarUsuario(2, { nome: "Carlos" });
 
-		expect(resposta).toContain("Usuário não encontrado")
-	})
+    expect(resposta).toContain("Usuário não encontrado");
+  });
 
-	test("deve alterar o ativo de um usuário", () => {
-		gerenciamento.alterarAtivo(0)
+  test("deve alterar o ativo de um usuário", () => {
+    gerenciamento.alterarAtivo(0);
 
-		expect(gerenciamento.usuarios[0].ativo).toBe(false)
-	})
+    expect(gerenciamento.usuarios[0].ativo).toBe(false);
+  });
 
-	test("deve retornar erro ao não encontrar o usuário ao alterar ativo", () => {
-		const resposta = gerenciamento.alterarAtivo(2)
+  test("deve retornar erro ao não encontrar o usuário ao alterar ativo", () => {
+    const resposta = gerenciamento.alterarAtivo(2);
 
-		expect(resposta).toBe("Não foi possível encontrar o usuário")
-	})
+    expect(resposta).toBe("Não foi possível encontrar o usuário");
+  });
 
-	test("deve retornar uma lista de usuários", () => {
-		const resposta = gerenciamento.listarUsuarios()
+  test("deve retornar uma lista de usuários", () => {
+    const resposta = gerenciamento.listarUsuarios();
 
-		console.log(resposta)
+    console.log(resposta);
 
-		expect(Array.isArray(resposta)).toBe(true)
-	})
+    expect(Array.isArray(resposta)).toBe(true);
+  });
 
-	test("deve excluir um usuário", () => {
-		gerenciamento.excluirUsuario(0)
+  test("deve excluir um usuário", () => {
+    gerenciamento.excluirUsuario(0);
 
-		expect(gerenciamento.usuarios[0]).toBe(undefined)
-	})
+    expect(gerenciamento.usuarios[0]).toBe(undefined);
+  });
 
-	test("deve retornar erro ao não encontrar um usuário para excluir", () => {
-		const resposta = gerenciamento.excluirUsuario(0)
+  test("deve retornar erro ao não encontrar um usuário para excluir", () => {
+    const resposta = gerenciamento.excluirUsuario(0);
 
-		expect(resposta).toBe("Não foi possível encontrar o usuário para excluir")
+    expect(resposta).toBe("Não foi possível encontrar o usuário para excluir");
+  });
+});
+
+describe("Login de usuários", () => {
+  const gerenciamento = new GerenciamentoUsuarios();
+  const autenticacao = new Autenticacao();
+
+  test("deve criar um usuário e fazer login com ele", () => {
+    gerenciamento.criarUsuario(dadosUsuario);
+
+    const resposta = autenticacao.fazerLogin(
+      dadosUsuario.email,
+      dadosUsuario.senha
+    );
+
+		expect(resposta).toBe("Usuário autenticado com sucesso")
+		expect(autenticacao.emailAutenticado).toBe(dadosUsuario.emailAutenticado)
+  });
+
+	test("deve retornar erro de dados inválidos", () => {
+		const resposta = autenticacao.fazerLogin(
+			"carlosfelipe",
+			"12345678"
+		)
+
+		expect(resposta).toBe("Verifique seus dados e tente novamente")
 	})
 });
