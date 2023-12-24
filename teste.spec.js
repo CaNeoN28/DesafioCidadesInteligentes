@@ -103,6 +103,14 @@ describe("Gerenciamento de usuários", () => {
 		expect(resposta).toBe("Não foi possível encontrar o usuário")
 	})
 
+	test("deve retornar uma lista de usuários", () => {
+		const resposta = gerenciamento.listarUsuarios()
+
+		console.log(resposta)
+
+		expect(Array.isArray(resposta)).toBe(true)
+	})
+
 	test("deve excluir um usuário", () => {
 		gerenciamento.excluirUsuario(0)
 

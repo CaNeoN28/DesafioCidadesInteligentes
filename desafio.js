@@ -154,7 +154,10 @@ class GerenciamentoUsuarios {
       return "Não foi possível encontrar o usuário para excluir";
     }
   }
-  listarUsuarios() {}
+
+  listarUsuarios() {
+		return (this.usuarios)
+	}
 }
 
 module.exports = {
