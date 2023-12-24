@@ -85,9 +85,21 @@ describe("Gerenciamento de usuários", () => {
 		expect(resposta).toContain("Senha inválida")
 	})
 
-	test("deve retornar erro ao não encontrar o usuario", () => {
+	test("deve retornar erro ao não encontrar o usuario ao alterar seus dados", () => {
 		const resposta = gerenciamento.alterarUsuario(2, {nome: "Carlos"})
 
 		expect(resposta).toContain("Usuário não encontrado")
+	})
+
+	test("deve alterar o ativo de um usuário", () => {
+		gerenciamento.alterarAtivo(0)
+
+		expect(gerenciamento.usuarios[0].ativo).toBe(false)
+	})
+
+	test("deve retornar erro ao não encontrar o usuário ao alterar ativo", () => {
+		const resposta = gerenciamento.alterarAtivo(2)
+
+		expect(resposta).toBe("Não foi possível encontrar o usuário")
 	})
 });
