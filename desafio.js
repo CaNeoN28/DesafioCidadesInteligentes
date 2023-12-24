@@ -48,7 +48,7 @@ class Usuario {
       this.nome = dadosUsuario.nome;
       this.email = dadosUsuario.email;
       this.listaPermissoes = dadosUsuario.listaPermissoes || [];
-      this.ativo = new Boolean(dadosUsuario.ativo) || false;
+      this.ativo = Boolean(dadosUsuario.ativo) || false;
 
       this.dataCriacao = new Date();
       this.dataLogin = null;
@@ -63,7 +63,15 @@ class Usuario {
 class GerenciamentoUsuarios {
   usuarios = [];
 
-  criarUsuario() {}
+  criarUsuario(dadosUsuario) {
+		try {
+			const usuario = new Usuario(dadosUsuario)
+
+			this.usuarios.push(usuario)
+		} catch {
+			return "Não foi possível cadastrar o usuário"
+		}
+	}
   alterarUsuario() {}
   alterarAtivo() {}
   excluirUsuario() {}

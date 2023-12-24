@@ -17,7 +17,7 @@ describe("Criação do usuário", () => {
     expect(usuario.nome).toBe("Carlos Felipe");
     expect(usuario.email).toBe("carlosfelipe.st28@gmail.com");
     expect(usuario.listaPermissoes).toEqual([]);
-    expect(usuario.ativo).toEqual(new Boolean(true));
+    expect(usuario.ativo).toEqual(Boolean(true));
   });
 
   test("deve dar erro de atributos inválidos", () => {
@@ -49,13 +49,21 @@ describe("Criação do usuário", () => {
   test("deve testar a criptografia da senha", () => {
     const usuario = new Usuario(dadosUsuario);
 
-    const senhaCorreta = compareSync(dadosUsuario.senha, usuario.senha)
+    const senhaCorreta = compareSync(dadosUsuario.senha, usuario.senha);
 
-		expect(usuario.senha).not.toBe(dadosUsuario.senha)
-		expect(senhaCorreta).toBe(true)
+    expect(usuario.senha).not.toBe(dadosUsuario.senha);
+    expect(senhaCorreta).toBe(true);
   });
 });
 
 describe("Gerenciamento de usuários", () => {
-	const gerenciamento = new GerenciamentoUsuarios()
-})
+  const gerenciamento = new GerenciamentoUsuarios();
+
+  test("deve criar um novo usuário", () => {
+		expect(gerenciamento.usuarios.length).toBe(0)
+
+    gerenciamento.criarUsuario(dadosUsuario);
+
+		expect(gerenciamento.usuarios.length).toBe(1)
+  });
+});
