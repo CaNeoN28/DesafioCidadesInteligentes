@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "desafio.js",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },

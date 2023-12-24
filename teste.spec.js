@@ -1,7 +1,13 @@
 const { describe, expect, test } = require("@jest/globals")
+const { Usuario } = require("./desafio.js")
 
 describe ("Criação do usuário", () => {
     test("deve instanciar um usuário com os atributos corretos", () => {
-        expect(true).toBe(true)
+        const usuario = new Usuario("Carlos Felipe", "carlosfelipe.st28@gmail.com", "1234Asdf.", [], true)
+
+        expect(usuario.nome).toBe("Carlos Felipe")
+        expect(usuario.email).toBe("carlosfelipe.st28@gmail.com")
+        expect(usuario.listaPermissoes).toEqual([])
+        expect(usuario.ativo).toBe(true)
     })
 })
