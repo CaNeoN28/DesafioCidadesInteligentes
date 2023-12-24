@@ -72,8 +72,18 @@ class GerenciamentoUsuarios {
 			return "Não foi possível cadastrar o usuário"
 		}
 	}
-	
-  alterarUsuario() {}
+
+  alterarUsuario(indice, dadosUsuario) {
+		try {
+			const seraAtualizado = this.usuarios[indice]
+
+			const novoUsuario = new Usuario({...seraAtualizado, ...dadosUsuario})
+
+			this.usuarios[indice] = {...novoUsuario}
+		} catch (error){
+			return `Não foi possível atualizar o usuário: ${error}`
+		}
+	}
   alterarAtivo() {}
   excluirUsuario() {}
   listarUsuarios() {}
