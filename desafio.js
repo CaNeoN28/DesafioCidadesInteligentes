@@ -149,15 +149,23 @@ class GerenciamentoUsuarios {
     const usuario = this.usuarios[indice];
 
     if (usuario) {
-      this.usuarios.splice(indice, 1)
+      this.usuarios.splice(indice, 1);
     } else {
       return "Não foi possível encontrar o usuário para excluir";
     }
   }
 
   listarUsuarios() {
-		return (this.usuarios)
-	}
+    return this.usuarios;
+  }
+}
+
+class Login {
+  emailAutenticado = null;
+
+  fazerLogin(email, senha) {}
+
+  fazerLogout() {}
 }
 
 module.exports = {
