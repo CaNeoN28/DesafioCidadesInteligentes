@@ -1,5 +1,5 @@
 const { describe, expect, test } = require("@jest/globals");
-const { Usuario } = require("./desafio.js");
+const { Usuario, GerenciamentoUsuarios } = require("./desafio.js");
 const { compareSync } = require("bcrypt");
 
 const dadosUsuario = {
@@ -55,3 +55,7 @@ describe("Criação do usuário", () => {
 		expect(senhaCorreta).toBe(true)
   });
 });
+
+describe("Gerenciamento de usuários", () => {
+	const gerenciamento = new GerenciamentoUsuarios()
+})

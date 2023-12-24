@@ -1,18 +1,18 @@
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 class Usuario {
   validarUsuario(dadosUsuario) {
     const erros = [];
 
-		const {nome, email, senha, listaPermissoes} = dadosUsuario || {}
+    const { nome, email, senha, listaPermissoes } = dadosUsuario || {};
 
     const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const regexSenha =
-		/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/g;
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/g;
 
-		if (!nome){
-			erros.push("Nome é obrigatório")
-		}
+    if (!nome) {
+      erros.push("Nome é obrigatório");
+    }
 
     if (!email) {
       erros.push("Email é obrigatório");
@@ -26,24 +26,24 @@ class Usuario {
       erros.push("Senha inválida");
     }
 
-		if (listaPermissoes && !Array.isArray(listaPermissoes)){
-			erros.push("Lista de permissões é inválida")
-		}
+    if (listaPermissoes && !Array.isArray(listaPermissoes)) {
+      erros.push("Lista de permissões é inválida");
+    }
 
     if (erros.length > 0) {
       throw erros.join(", ");
     }
   }
 
-	criptografarSenha(senha) {
-		const salt = bcrypt.genSaltSync(6)
+  criptografarSenha(senha) {
+    const salt = bcrypt.genSaltSync(6);
 
-		this.senha = bcrypt.hashSync(senha, salt)
-	}
+    this.senha = bcrypt.hashSync(senha, salt);
+  }
 
   constructor(dadosUsuario) {
     try {
-			this.validarUsuario(dadosUsuario)
+      this.validarUsuario(dadosUsuario);
 
       this.nome = dadosUsuario.nome;
       this.email = dadosUsuario.email;
@@ -53,13 +53,24 @@ class Usuario {
       this.dataCriacao = new Date();
       this.dataLogin = null;
 
-			this.criptografarSenha(dadosUsuario.senha)
+      this.criptografarSenha(dadosUsuario.senha);
     } catch (error) {
       throw error;
     }
   }
 }
 
+class GerenciamentoUsuarios {
+  usuarios = [];
+
+  static criarUsuario() {}
+  static alterarUsuario() {}
+  static alterarAtivo() {}
+  static excluirUsuario() {}
+  static listarUsuarios() {}
+}
+
 module.exports = {
   Usuario,
+	GerenciamentoUsuarios
 };
