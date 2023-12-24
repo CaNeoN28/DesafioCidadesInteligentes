@@ -1,14 +1,9 @@
 const bcrypt = require("bcrypt");
 
 class Usuario {
-  validarUsuario(dadosUsuario) {
+  validarObrigatorio(dadosUsuario) {
     const erros = [];
-
-    const { nome, email, senha, listaPermissoes } = dadosUsuario || {};
-
-    const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    const regexSenha =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/g;
+    const { nome, email, senha } = dadosUsuario;
 
     if (!nome) {
       erros.push("Nome é obrigatório");
@@ -16,13 +11,42 @@ class Usuario {
 
     if (!email) {
       erros.push("Email é obrigatório");
-    } else if (!regexEmail.test(email)) {
-      erros.push("Email inválido");
     }
 
     if (!senha) {
       erros.push("Senha é obrigatória");
-    } else if (!regexSenha.test(senha)) {
+    }
+
+    if (erros.length > 0) {
+      return erros;
+    }
+  }
+
+  static validarEmail(email) {
+    const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+    return regexEmail.test(email);
+  }
+
+  static validarSenha(senha) {
+    const regexSenha =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/g;
+
+    return regexSenha.test(senha);
+  }
+
+  validarUsuario(dadosUsuario) {
+    const obrigatorios = this.validarObrigatorio(dadosUsuario);
+
+    const erros = [];
+
+    const { email, senha, listaPermissoes } = dadosUsuario;
+
+    if (!Usuario.validarEmail(email)) {
+      erros.push("Email inválido");
+    }
+
+    if (!Usuario.validarSenha(senha)) {
       erros.push("Senha inválida");
     }
 
@@ -31,7 +55,7 @@ class Usuario {
     }
 
     if (erros.length > 0) {
-      throw erros.join(", ");
+      throw erros.concat(obrigatorios).join(", ");
     }
   }
 
@@ -43,7 +67,7 @@ class Usuario {
 
   constructor(dadosUsuario) {
     try {
-      this.validarUsuario(dadosUsuario);
+      this.validarUsuario(dadosUsuario || {});
 
       this.nome = dadosUsuario.nome;
       this.email = dadosUsuario.email;
@@ -64,26 +88,51 @@ class GerenciamentoUsuarios {
   usuarios = [];
 
   criarUsuario(dadosUsuario) {
-		try {
-			const usuario = new Usuario(dadosUsuario)
+    try {
+      const usuario = new Usuario(dadosUsuario);
 
-			this.usuarios.push(usuario)
-		} catch {
-			return "Não foi possível cadastrar o usuário"
-		}
-	}
+      this.usuarios.push(usuario);
+    } catch {
+      return "Não foi possível cadastrar o usuário";
+    }
+  }
 
   alterarUsuario(indice, dadosUsuario) {
-		try {
-			const seraAtualizado = this.usuarios[indice]
+    const { nome, email, senha, listaPermissoes, ativo } = dadosUsuario;
+    try {
+      const erros = [];
 
-			const novoUsuario = new Usuario({...seraAtualizado, ...dadosUsuario})
+      const usuario = this.usuarios[indice];
 
-			this.usuarios[indice] = {...novoUsuario}
-		} catch (error){
-			return `Não foi possível atualizar o usuário: ${error}`
-		}
-	}
+      if (nome) usuario.nome = nome;
+
+      if (ativo) usuario.ativo = ativo;
+
+      if (email && !Usuario.validarEmail(email)) {
+        erros.push("Email inválido");
+      } else if (email) {
+        usuario.email = email;
+      }
+
+      if (listaPermissoes && !Array.isArray(listaPermissoes)) {
+        erros.push("Lista de permissões inválida");
+      }
+
+      if (senha && !Usuario.validarSenha(senha)) {
+        erros.push("Senha inválida");
+      } else if (senha) {
+        const usuario = new Usuario({ ...usuario, ...dadosUsuario });
+      }
+
+      if (erros.length > 0) {
+        throw erros.join(", ");
+      }
+
+      this.usuarios[indice] = usuario;
+    } catch (error) {
+      return `Não foi possível atualizar o usuário: ${error}`;
+    }
+  }
   alterarAtivo() {}
   excluirUsuario() {}
   listarUsuarios() {}
@@ -91,5 +140,5 @@ class GerenciamentoUsuarios {
 
 module.exports = {
   Usuario,
-	GerenciamentoUsuarios
+  GerenciamentoUsuarios,
 };

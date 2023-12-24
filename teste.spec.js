@@ -72,4 +72,18 @@ describe("Gerenciamento de usuários", () => {
       "Não foi possível cadastrar o usuário"
     );
   });
+
+  test("deve alterar um usuário no indice", () => {
+    const resposta = gerenciamento.alterarUsuario(0, { nome: "Carlos Felipe Steinheuser" });
+
+		console.log(resposta)
+
+		expect(gerenciamento.usuarios[0].nome).toBe("Carlos Felipe Steinheuser")
+  });
+
+	test("deve retornar erro ao substituir por um dado inválido", () => {
+		const resposta = gerenciamento.alterarUsuario(0, {senha: "12345678"})
+
+		expect(resposta).toContain("Senha inválida")
+	})
 });
