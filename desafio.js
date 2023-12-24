@@ -63,11 +63,11 @@ class Usuario {
 class GerenciamentoUsuarios {
   usuarios = [];
 
-  static criarUsuario() {}
-  static alterarUsuario() {}
-  static alterarAtivo() {}
-  static excluirUsuario() {}
-  static listarUsuarios() {}
+  criarUsuario() {}
+  alterarUsuario() {}
+  alterarAtivo() {}
+  excluirUsuario() {}
+  listarUsuarios() {}
 }
 
 module.exports = {
