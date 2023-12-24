@@ -77,6 +77,12 @@ describe("Gerenciamento de usuários", () => {
     );
   });
 
+	test("deve retornar erro ao cadastrar usuário com email existente", () => {
+		const resposta = gerenciamento.criarUsuario(dadosUsuario)
+
+		expect(resposta).toContain("Email já utilizado")
+	})
+
   test("deve alterar um usuário no indice", () => {
     const resposta = gerenciamento.alterarUsuario(0, {
       nome: "Carlos Felipe Steinheuser",
@@ -84,6 +90,12 @@ describe("Gerenciamento de usuários", () => {
 
     expect(gerenciamento.usuarios[0].nome).toBe("Carlos Felipe Steinheuser");
   });
+
+	test("deve retornar erro ao alterar email do usuário para um email já existente", () => {
+		const resposta = gerenciamento.criarUsuario(dadosUsuario)
+
+		expect(resposta).toContain("Email já utilizado")
+	})
 
   test("deve retornar erro ao substituir por um dado inválido", () => {
     const resposta = gerenciamento.alterarUsuario(0, { senha: "12345678" });
