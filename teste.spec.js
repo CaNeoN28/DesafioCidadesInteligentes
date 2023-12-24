@@ -72,30 +72,32 @@ describe("Gerenciamento de usuários", () => {
   });
 
   test("deve retornar erro ao criar usuário", () => {
-    expect(gerenciamento.criarUsuario({})).toBe(
+    expect(gerenciamento.criarUsuario({})).toContain(
       "Não foi possível cadastrar o usuário"
     );
   });
 
-	test("deve retornar erro ao cadastrar usuário com email existente", () => {
-		const resposta = gerenciamento.criarUsuario(dadosUsuario)
+  test("deve retornar erro ao cadastrar usuário com email existente", () => {
+    const resposta = gerenciamento.criarUsuario(dadosUsuario);
 
-		expect(resposta).toContain("Email já utilizado")
-	})
+    expect(resposta).toContain("Email já utilizado");
+  });
 
   test("deve alterar um usuário no indice", () => {
     const resposta = gerenciamento.alterarUsuario(0, {
       nome: "Carlos Felipe Steinheuser",
     });
 
+    console.log(resposta);
+
     expect(gerenciamento.usuarios[0].nome).toBe("Carlos Felipe Steinheuser");
   });
 
-	test("deve retornar erro ao alterar email do usuário para um email já existente", () => {
-		const resposta = gerenciamento.criarUsuario(dadosUsuario)
+  test("deve retornar erro ao alterar email do usuário para um email já existente", () => {
+    const resposta = gerenciamento.criarUsuario(dadosUsuario);
 
-		expect(resposta).toContain("Email já utilizado")
-	})
+    expect(resposta).toContain("Email já utilizado");
+  });
 
   test("deve retornar erro ao substituir por um dado inválido", () => {
     const resposta = gerenciamento.alterarUsuario(0, { senha: "12345678" });
@@ -153,28 +155,26 @@ describe("Autenticação de usuários", () => {
       dadosUsuario.senha
     );
 
-		expect(resposta).toBe("Usuário autenticado com sucesso")
-		expect(gerenciamento.emailAutenticado).toBe(dadosUsuario.email)
+    expect(resposta).toBe("Usuário autenticado com sucesso");
+    expect(gerenciamento.emailAutenticado).toBe(dadosUsuario.email);
+    expect(gerenciamento.usuarios[0].dataLogin).not.toBe(null);
   });
 
-	test("deve retornar erro ao omitir os dados", () => {
-		const resposta = gerenciamento.fazerLogin()
+  test("deve retornar erro ao omitir os dados", () => {
+    const resposta = gerenciamento.fazerLogin();
 
-		expect(resposta).toBe("Email e senha são obrigatórios")
-	})
+    expect(resposta).toBe("Email e senha são obrigatórios");
+  });
 
-	test("deve retornar erro de dados inválidos", () => {
-		const resposta = gerenciamento.fazerLogin(
-			"carlosfelipe",
-			"12345678"
-		)
+  test("deve retornar erro de dados inválidos", () => {
+    const resposta = gerenciamento.fazerLogin("carlosfelipe", "12345678");
 
-		expect(resposta).toBe("Verifique seus dados e tente novamente")
-	})
+    expect(resposta).toBe("Verifique seus dados e tente novamente");
+  });
 
-	test("deve realizar o logout do usuário", () => {
-		gerenciamento.fazerLogout()
+  test("deve realizar o logout do usuário", () => {
+    gerenciamento.fazerLogout();
 
-		expect(gerenciamento.emailAutenticado).toBe(null)
-	})
+    expect(gerenciamento.emailAutenticado).toBe(null);
+  });
 });

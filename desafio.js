@@ -92,9 +92,13 @@ class GerenciamentoUsuarios {
     try {
       const usuario = new Usuario(dadosUsuario);
 
+      if (this.usuarios.find((u) => u.email === dadosUsuario.email)) {
+        throw "Email já utilizado";
+      }
+
       this.usuarios.push(usuario);
-    } catch {
-      return "Não foi possível cadastrar o usuário";
+    } catch (error) {
+      return "Não foi possível cadastrar o usuário: " + error;
     }
   }
 
@@ -103,7 +107,7 @@ class GerenciamentoUsuarios {
 
     const erros = [];
 
-    const usuario = this.usuarios[indice];
+    const usuario = this.usuarios.at(indice);
 
     if (usuario) {
       if (nome) usuario.nome = nome;
@@ -113,7 +117,9 @@ class GerenciamentoUsuarios {
       if (email && !Usuario.validarEmail(email)) {
         erros.push("Email inválido");
       } else if (email) {
-        usuario.email = email;
+        if (this.usuarios.find((u) => u.email === email))
+          erros.push("Email já utilizado");
+        else usuario.email = email;
       }
 
       if (listaPermissoes && !Array.isArray(listaPermissoes)) {
@@ -161,28 +167,30 @@ class GerenciamentoUsuarios {
   }
 
   fazerLogin(email, senha) {
-		if(!email || !senha){
-			return "Email e senha são obrigatórios"
-		}
+    if (!email || !senha) {
+      return "Email e senha são obrigatórios";
+    }
 
-		const usuario = this.usuarios.find(u => u.email === email)
-		let loginValido = false
+    const index = this.usuarios.findIndex((u) => u.email === email);
+    let loginValido = false;
 
-		if(usuario){
-			loginValido = bcrypt.compareSync(senha, usuario.senha)
-		}
+    if (index != -1) {
+      loginValido = bcrypt.compareSync(senha, this.usuarios[index].senha);
+    }
 
-		if(loginValido){
-			this.emailAutenticado = email
-			return "Usuário autenticado com sucesso"
-		}
+    if (loginValido) {
+      this.emailAutenticado = email;
+      this.usuarios[index].dataLogin = new Date();
 
-		return "Verifique seus dados e tente novamente"
-	}
+      return "Usuário autenticado com sucesso";
+    }
+
+    return "Verifique seus dados e tente novamente";
+  }
 
   fazerLogout() {
-		this.emailAutenticado = null
-	}
+    this.emailAutenticado = null;
+  }
 }
 
 module.exports = {
