@@ -72,6 +72,7 @@ class GerenciamentoUsuarios {
 			return "Não foi possível cadastrar o usuário"
 		}
 	}
+	
   alterarUsuario() {}
   alterarAtivo() {}
   excluirUsuario() {}

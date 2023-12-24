@@ -60,10 +60,16 @@ describe("Gerenciamento de usuários", () => {
   const gerenciamento = new GerenciamentoUsuarios();
 
   test("deve criar um novo usuário", () => {
-		expect(gerenciamento.usuarios.length).toBe(0)
+    expect(gerenciamento.usuarios.length).toBe(0);
 
     gerenciamento.criarUsuario(dadosUsuario);
 
-		expect(gerenciamento.usuarios.length).toBe(1)
+    expect(gerenciamento.usuarios.length).toBe(1);
+  });
+
+  test("deve retornar erro ao criar usuário", () => {
+    expect(gerenciamento.criarUsuario({})).toBe(
+      "Não foi possível cadastrar o usuário"
+    );
   });
 });
