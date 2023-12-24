@@ -1,26 +1,26 @@
 class Usuario {
   validarUsuario(dadosUsuario) {
-		const {nome, email, senha, listaPermissoes} = dadosUsuario
-
     const erros = [];
+
+		const {nome, email, senha, listaPermissoes} = dadosUsuario || {}
+
     const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const regexSenha =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/g;
+		/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/g;
 
-		if (nome == undefined){
+		if (!nome){
 			erros.push("Nome é obrigatório")
 		}
 
-    if (email == undefined) {
+    if (!email) {
       erros.push("Email é obrigatório");
     } else if (!regexEmail.test(email)) {
       erros.push("Email inválido");
     }
 
-    if (senha == undefined) {
+    if (!senha) {
       erros.push("Senha é obrigatória");
     } else if (!regexSenha.test(senha)) {
-			console.log(senha)
       erros.push("Senha inválida");
     }
 
@@ -33,15 +33,15 @@ class Usuario {
     }
   }
 
-  constructor(nome, email, senha, listaPermissoes, ativo) {
+  constructor(dadosUsuario) {
     try {
-			this.validarUsuario({nome, email, senha, listaPermissoes})
+			this.validarUsuario(dadosUsuario)
 
-      this.nome = nome;
-      this.email = email;
-      this.senha = senha;
-      this.listaPermissoes = listaPermissoes || [];
-      this.ativo = new Boolean(ativo) || false;
+      this.nome = dadosUsuario.nome;
+      this.email = dadosUsuario.email;
+      this.senha = dadosUsuario.senha;
+      this.listaPermissoes = dadosUsuario.listaPermissoes || [];
+      this.ativo = new Boolean(dadosUsuario.ativo) || false;
 
       this.dataCriacao = new Date();
       this.dataLogin = null;
