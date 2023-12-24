@@ -132,22 +132,21 @@ describe("Gerenciamento de usuários", () => {
 
 describe("Login de usuários", () => {
   const gerenciamento = new GerenciamentoUsuarios();
-  const autenticacao = new Autenticacao();
 
   test("deve criar um usuário e fazer login com ele", () => {
     gerenciamento.criarUsuario(dadosUsuario);
 
-    const resposta = autenticacao.fazerLogin(
+    const resposta = gerenciamento.fazerLogin(
       dadosUsuario.email,
       dadosUsuario.senha
     );
 
 		expect(resposta).toBe("Usuário autenticado com sucesso")
-		expect(autenticacao.emailAutenticado).toBe(dadosUsuario.emailAutenticado)
+		expect(gerenciamento.emailAutenticado).toBe(dadosUsuario.emailAutenticado)
   });
 
 	test("deve retornar erro de dados inválidos", () => {
-		const resposta = autenticacao.fazerLogin(
+		const resposta = gerenciamento.fazerLogin(
 			"carlosfelipe",
 			"12345678"
 		)

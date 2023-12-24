@@ -86,6 +86,7 @@ class Usuario {
 
 class GerenciamentoUsuarios {
   usuarios = [];
+  emailAutenticado = null;
 
   criarUsuario(dadosUsuario) {
     try {
@@ -158,18 +159,12 @@ class GerenciamentoUsuarios {
   listarUsuarios() {
     return this.usuarios;
   }
-}
-
-class Autenticacao {
-  emailAutenticado = null;
 
   fazerLogin(email, senha) {}
-
   fazerLogout() {}
 }
 
 module.exports = {
   Usuario,
   GerenciamentoUsuarios,
-	Autenticacao
 };
