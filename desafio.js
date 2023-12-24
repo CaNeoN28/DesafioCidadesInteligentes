@@ -99,45 +99,52 @@ class GerenciamentoUsuarios {
 
   alterarUsuario(indice, dadosUsuario) {
     const { nome, email, senha, listaPermissoes, ativo } = dadosUsuario;
-    try {
-      const erros = [];
 
-      const usuario = this.usuarios[indice];
+    const erros = [];
 
-      if (usuario) {
-        if (nome) usuario.nome = nome;
+    const usuario = this.usuarios[indice];
 
-        if (ativo) usuario.ativo = ativo;
+    if (usuario) {
+      if (nome) usuario.nome = nome;
 
-        if (email && !Usuario.validarEmail(email)) {
-          erros.push("Email inválido");
-        } else if (email) {
-          usuario.email = email;
-        }
+      if (ativo) usuario.ativo = ativo;
 
-        if (listaPermissoes && !Array.isArray(listaPermissoes)) {
-          erros.push("Lista de permissões inválida");
-        }
-
-        if (senha && !Usuario.validarSenha(senha)) {
-          erros.push("Senha inválida");
-        } else if (senha) {
-          const usuario = new Usuario({ ...usuario, ...dadosUsuario });
-        }
-      } else {
-        erros.push("Usuário não encontrado");
+      if (email && !Usuario.validarEmail(email)) {
+        erros.push("Email inválido");
+      } else if (email) {
+        usuario.email = email;
       }
 
-      if (erros.length > 0) {
-        throw erros.join(", ");
+      if (listaPermissoes && !Array.isArray(listaPermissoes)) {
+        erros.push("Lista de permissões inválida");
       }
 
-      this.usuarios[indice] = usuario;
-    } catch (error) {
-      return `Não foi possível atualizar o usuário: ${error}`;
+      if (senha && !Usuario.validarSenha(senha)) {
+        erros.push("Senha inválida");
+      } else if (senha) {
+        const usuario = new Usuario({ ...usuario, ...dadosUsuario });
+      }
+    } else {
+      erros.push("Usuário não encontrado");
     }
+
+    if (erros.length > 0) {
+      return `Não foi possível atualizar o usuário: ${erros.join(", ")}`;
+    }
+
+    this.usuarios[indice] = usuario;
   }
-  alterarAtivo() {}
+
+  alterarAtivo(indice) {
+    const usuario = this.usuarios[indice];
+
+    if (usuario) {
+			this.usuarios = {...usuario, ativo: !usuario.ativo}
+    } else {
+			return "Não foi possível encontrar o usuário"
+		}
+  }
+	
   excluirUsuario() {}
   listarUsuarios() {}
 }
