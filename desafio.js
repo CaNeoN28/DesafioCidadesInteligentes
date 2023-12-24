@@ -160,7 +160,25 @@ class GerenciamentoUsuarios {
     return this.usuarios;
   }
 
-  fazerLogin(email, senha) {}
+  fazerLogin(email, senha) {
+		if(!email || !senha){
+			return "Email e senha são obrigatórios"
+		}
+
+		const usuario = this.usuarios.find(u => u.email === email)
+		let loginValido = false
+
+		if(usuario){
+			loginValido = bcrypt.compareSync(senha, usuario.senha)
+		}
+
+		if(loginValido){
+			this.emailAutenticado = email
+			return "Usuário autenticado com sucesso"
+		}
+
+		return "Verifique seus dados e tente novamente"
+	}
   fazerLogout() {}
 }
 

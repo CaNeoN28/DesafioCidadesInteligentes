@@ -142,8 +142,14 @@ describe("Login de usuários", () => {
     );
 
 		expect(resposta).toBe("Usuário autenticado com sucesso")
-		expect(gerenciamento.emailAutenticado).toBe(dadosUsuario.emailAutenticado)
+		expect(gerenciamento.emailAutenticado).toBe(dadosUsuario.email)
   });
+
+	test("deve retornar erro ao omitir os dados", () => {
+		const resposta = gerenciamento.fazerLogin()
+
+		expect(resposta).toBe("Email e senha são obrigatórios")
+	})
 
 	test("deve retornar erro de dados inválidos", () => {
 		const resposta = gerenciamento.fazerLogin(
