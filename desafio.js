@@ -179,7 +179,10 @@ class GerenciamentoUsuarios {
 
 		return "Verifique seus dados e tente novamente"
 	}
-  fazerLogout() {}
+
+  fazerLogout() {
+		this.emailAutenticado = null
+	}
 }
 
 module.exports = {

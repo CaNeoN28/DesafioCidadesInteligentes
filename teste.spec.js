@@ -130,7 +130,7 @@ describe("Gerenciamento de usuários", () => {
   });
 });
 
-describe("Login de usuários", () => {
+describe("Autenticação de usuários", () => {
   const gerenciamento = new GerenciamentoUsuarios();
 
   test("deve criar um usuário e fazer login com ele", () => {
@@ -158,5 +158,11 @@ describe("Login de usuários", () => {
 		)
 
 		expect(resposta).toBe("Verifique seus dados e tente novamente")
+	})
+
+	test("deve realizar o logout do usuário", () => {
+		gerenciamento.fazerLogout()
+
+		expect(gerenciamento.emailAutenticado).toBe(null)
 	})
 });
